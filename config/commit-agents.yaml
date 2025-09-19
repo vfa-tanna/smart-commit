@@ -1,0 +1,75 @@
+# Commit Agents Configuration
+
+# Conventional Commit Types
+commit_types:
+  feat: "A new feature"
+  fix: "A bug fix"
+  docs: "Documentation only changes"
+  style: "Changes that do not affect the meaning of the code"
+  refactor: "A code change that neither fixes a bug nor adds a feature"
+  perf: "A code change that improves performance"
+  test: "Adding missing tests or correcting existing tests"
+  build: "Changes that affect the build system or external dependencies"
+  ci: "Changes to CI configuration files and scripts"
+  chore: "Other changes that do not modify src or test files"
+  revert: "Reverts a previous commit"
+
+# File type mappings
+file_types:
+  source_code:
+    - .py
+    - .js
+    - .ts
+    - .jsx
+    - .tsx
+    - .go
+    - .java
+    - .cpp
+    - .c
+    - .rs
+    - .rb
+    - .php
+  
+  web:
+    - .html
+    - .css
+    - .scss
+    - .sass
+    - .vue
+    - .svelte
+  
+  config:
+    - .json
+    - .yaml
+    - .yml
+    - .toml
+    - .xml
+    - .ini
+    - .env
+  
+  documentation:
+    - .md
+    - .rst
+    - .txt
+    - .adoc
+  
+  scripts:
+    - .sh
+    - .bash
+    - .zsh
+    - .fish
+    - .ps1
+
+# Message generation rules
+message_rules:
+  max_subject_length: 72
+  max_body_line_length: 100
+  use_imperative_mood: true
+  capitalize_subject: false
+  end_subject_with_period: false
+
+# Analysis settings
+analysis:
+  min_significant_lines: 5
+  min_files_for_body: 3
+  max_entities_to_show: 5
