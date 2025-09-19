@@ -23,7 +23,8 @@ cd ~/commit-agents
 chmod +x bin/smart-commit
 
 # Add to your PATH (add this to your ~/.zshrc or ~/.bashrc)
-export PATH="$HOME/commit-agents/bin:$PATH"
+echo 'export PATH="$HOME/commit-agents/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
 
 # Install required Python dependencies
 pip install PyYAML

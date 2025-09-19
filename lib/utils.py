@@ -19,15 +19,6 @@ def load_config() -> Dict[str, Any]:
     except FileNotFoundError:
         # Return default configuration if file doesn't exist
         return {
-            'commit_types': {
-                'feat': 'A new feature',
-                'fix': 'A bug fix',
-                'docs': 'Documentation only changes',
-                'style': 'Changes that do not affect the meaning of the code',
-                'refactor': 'A code change that neither fixes a bug nor adds a feature',
-                'test': 'Adding missing tests or correcting existing tests',
-                'chore': 'Other changes that do not modify src or test files'
-            },
             'message_rules': {
                 'max_subject_length': 72,
                 'max_body_line_length': 100,

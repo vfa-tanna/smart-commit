@@ -1,4 +1,7 @@
+import os
+import requests
 #!/usr/bin/env python3
+
 """
 Commit Message Generator Agent
 Generates conventional commit messages based on diff analysis
@@ -6,45 +9,59 @@ Generates conventional commit messages based on diff analysis
 
 import re
 from typing import Dict, List, Optional, Tuple
+from dotenv import load_dotenv
+
+from constants import COMMIT_TYPES, TYPE_MAPPING, ACTION_VERBS
+
+load_dotenv()
 
 class MessageGenerator:
+
+    def generate_message_with_gpt(self, diff: str, openai_api_key: str = None, model: str = "gpt-3.5-turbo") -> str:
+        """
+        Generate a commit message using OpenAI's GPT model based on the provided diff.
+        Args:
+            diff (str): The git diff string.
+            openai_api_key (str): Your OpenAI API key. If None, will use OPENAI_API_KEY env var.
+            model (str): OpenAI model name.
+        Returns:
+            str: Generated commit message.
+        """
+        api_key = openai_api_key or os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            raise ValueError("OpenAI API key not provided. Set OPENAI_API_KEY env variable or pass as argument.")
+
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        prompt = (
+            "You are an AI assistant that writes concise, conventional commit messages for code changes. "
+            "Given the following git diff, generate a clear, conventional commit message (subject only, no body):\n\n"
+            f"{diff}\n\nCommit message:"
+        )
+        data = {
+            "model": model,
+            "messages": [
+                {"role": "system", "content": "You are a helpful assistant that writes git commit messages."},
+                {"role": "user", "content": prompt}
+            ],
+            "max_tokens": 60,
+            "temperature": 0.2
+        }
+        response = requests.post(
+            "https://api.openai.com/v1/chat/completions",
+            headers=headers,
+            json=data
+        )
+        if response.status_code != 200:
+            raise RuntimeError(f"OpenAI API error: {response.status_code} {response.text}")
+        result = response.json()
+        return result["choices"][0]["message"]["content"].strip()
     def __init__(self):
-        # Conventional commit types and their descriptions
-        self.commit_types = {
-            'feat': 'A new feature',
-            'fix': 'A bug fix',
-            'docs': 'Documentation only changes',
-            'style': 'Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)',
-            'refactor': 'A code change that neither fixes a bug nor adds a feature',
-            'perf': 'A code change that improves performance',
-            'test': 'Adding missing tests or correcting existing tests',
-            'build': 'Changes that affect the build system or external dependencies',
-            'ci': 'Changes to our CI configuration files and scripts',
-            'chore': 'Other changes that do not modify src or test files',
-            'revert': 'Reverts a previous commit'
-        }
-        
-        # Map internal change types to conventional commit types
-        self.type_mapping = {
-            'feature': 'feat',
-            'fix': 'fix',
-            'docs': 'docs',
-            'style': 'style',
-            'refactor': 'refactor',
-            'test': 'test',
-            'chore': 'chore'
-        }
-        
-        # Common action verbs for different commit types
-        self.action_verbs = {
-            'feat': ['add', 'implement', 'create', 'introduce', 'build'],
-            'fix': ['fix', 'resolve', 'correct', 'patch', 'repair'],
-            'docs': ['update', 'improve', 'add', 'enhance', 'document'],
-            'style': ['format', 'style', 'lint', 'prettify', 'clean'],
-            'refactor': ['refactor', 'restructure', 'optimize', 'simplify', 'reorganize'],
-            'test': ['add', 'update', 'improve', 'fix', 'enhance'],
-            'chore': ['update', 'upgrade', 'maintain', 'cleanup', 'remove']
-        }
+        self.commit_types = COMMIT_TYPES
+        self.type_mapping = TYPE_MAPPING
+        self.action_verbs = ACTION_VERBS
 
     def generate_subject(self, analysis: Dict) -> str:
         """Generate the subject line of the commit message"""
