@@ -1,0 +1,46 @@
+{
+  "name": "smart-commit",
+  "version": "1.0.0",
+  "description": "Intelligent git commit agents that analyze your changes and generate meaningful conventional commit messages automatically",
+  "main": "bin/smart-commit.js",
+  "bin": {
+    "smart-commit": "./bin/smart-commit.js"
+  },
+  "scripts": {
+    "install-global": "npm install -g .",
+    "test": "node test-installation.js",
+    "start": "node bin/smart-commit.js"
+  },
+  "keywords": [
+    "git",
+    "commit",
+    "conventional-commits",
+    "automation",
+    "cli",
+    "smart-commit"
+  ],
+  "author": "Smart Commit Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "yaml": "^2.3.4",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1",
+    "commander": "^11.1.0",
+    "chalk": "^4.1.2",
+    "inquirer": "^8.2.6"
+  },
+  "devDependencies": {
+    "eslint": "^8.55.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vfa-tanna/smart-commit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vfa-tanna/smart-commit/issues"
+  },
+  "homepage": "https://github.com/vfa-tanna/smart-commit#readme"
+}

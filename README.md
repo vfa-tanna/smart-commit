@@ -10,32 +10,70 @@ Intelligent git commit agents that analyze your changes and generate meaningful 
 - 🔄 **Multiple Suggestions**: Provides several commit message options to choose from
 - ✅ **Validation**: Validates commit messages against conventional commit standards
 - 🚀 **Interactive & Automated**: Supports both interactive and automated workflows
+- 🌍 **Cross-Platform**: Works on Windows, macOS, and Linux with Node.js
+
+## Prerequisites
+
+- **Node.js 14+** - Download from [nodejs.org](https://nodejs.org)
+- **Git** - Download from [git-scm.com](https://git-scm.com)
+- **OpenAI API Key** (optional) - Get from [platform.openai.com](https://platform.openai.com/api-keys) for GPT features
 
 ## Installation
 
-### Quick Install
+### Quick Install (Recommended)
 
 ```bash
-# Clone or copy the commit-agents directory to your preferred location
-cd ~/commit-agents
+# Download or clone the smart-commit project
+git clone https://github.com/vfa-tanna/smart-commit.git
+cd smart-commit
 
-# Make the main script executable
-chmod +x bin/smart-commit
-
-# Add to your PATH (add this to your ~/.zshrc or ~/.bashrc)
-echo 'export PATH="$HOME/commit-agents/bin:$PATH"' >> ~/.zshrc
-source ~/.zshrc
-
-# Install required Python dependencies
-pip install PyYAML
+# Run the installation script
+node install.js
 ```
 
-### Manual Setup
+### Manual Installation
 
-1. Copy the `commit-agents` directory to `~/commit-agents`
-2. Make the script executable: `chmod +x ~/commit-agents/bin/smart-commit`
-3. Add to PATH: `export PATH="$HOME/commit-agents/bin:$PATH"`
-4. Install dependencies: `pip install PyYAML`
+```bash
+# Clone the repository
+git clone https://github.com/vfa-tanna/smart-commit.git
+cd smart-commit
+
+# Install dependencies
+npm install
+
+# Install globally (optional, for system-wide access)
+npm install -g .
+```
+
+### Configure GPT (Optional)
+
+To use GPT-powered commit message generation:
+
+```bash
+# Create .env file
+cp env.example .env
+
+# Edit .env and add your OpenAI API key
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+Get your API key from [OpenAI Platform](https://platform.openai.com/api-keys).
+
+### Windows Installation
+
+#### Option 1: Using Node.js (Recommended)
+```cmd
+# Download Node.js from https://nodejs.org
+# Then run:
+node install.js
+```
+
+#### Option 2: Manual Windows Setup
+1. Install Node.js from [nodejs.org](https://nodejs.org)
+2. Install Git from [git-scm.com](https://git-scm.com)
+3. Clone or download the project
+4. Run: `npm install`
+5. Run: `npm install -g .` (for global installation)
 
 ## Usage
 
@@ -65,6 +103,9 @@ For quick commits with generated messages:
 ```bash
 # Auto-stage all changes and commit with generated message
 smart-commit --stage-all --auto
+
+# Use GPT for better message generation
+smart-commit --stage-all --auto --gpt
 
 # Or with staged changes
 git add .
@@ -100,6 +141,9 @@ Options:
   -s, --stage-all      Stage all changes before committing
   --analyze-only       Only analyze changes, don't commit
   --dry-run           Show what would be committed without committing
+  --gpt               Use GPT to generate commit messages (requires OPENAI_API_KEY)
+  --gpt-model MODEL   GPT model to use (default: gpt-4o-mini)
+  --no-gpt            Disable GPT even if API key is available
   -h, --help          Show help message
 ```
 
@@ -172,6 +216,30 @@ $ git add src/utils.py
 $ smart-commit --auto
 
 📝 Committing with message: "fix(utils): resolve validation error"
+✅ Commit successful!
+```
+
+### GPT-Powered Commit
+```bash
+$ git add src/auth.js
+$ smart-commit --gpt
+
+🤖 GPT mode enabled (model: gpt-4o-mini)
+🔍 Analyzing changes...
+
+📊 Change Analysis:
+   Type: feature
+   Scope: javascript
+   Files: 1
+   Lines: +67 -12
+   Functions/Classes: authenticate, validateToken
+
+💡 Suggested commit messages:
+1. feat(auth): implement JWT authentication with token validation
+2. feat(auth): add secure user authentication system
+3. feat(auth): implement token-based authentication
+
+Select a commit message (1-5): 1
 ✅ Commit successful!
 ```
 
@@ -268,12 +336,82 @@ Following [Conventional Commits](https://www.conventionalcommits.org/):
 
 **Solution**: Run the command inside a git repository
 
-### Python Dependencies Missing
+### Node.js Dependencies Missing
 ```bash
-ModuleNotFoundError: No module named 'yaml'
+Error: Cannot find module 'yaml'
 ```
 
-**Solution**: Install dependencies with `pip install PyYAML`
+**Solution**: Install dependencies with `npm install`
+
+### GPT Not Working
+```bash
+GPT failed: OpenAI API key not provided
+```
+
+**Solutions**:
+1. Create a `.env` file in the project root
+2. Add `OPENAI_API_KEY=your_api_key_here`
+3. Get your API key from [platform.openai.com](https://platform.openai.com/api-keys)
+
+### GPT API Key Invalid
+```bash
+Invalid OpenAI API key
+```
+
+**Solutions**:
+1. Check your API key is correct
+2. Ensure you have credits in your OpenAI account
+3. Verify the API key has the necessary permissions
+
+### Test Your Installation
+```bash
+# Run the test script to verify everything is working
+node test-installation.js
+```
+
+### Windows-Specific Issues
+
+#### Node.js Not Found
+```cmd
+'node' is not recognized as an internal or external command
+```
+
+**Solutions**:
+1. Install Node.js from [nodejs.org](https://nodejs.org)
+2. Restart your command prompt after installation
+3. Check if Node.js is added to PATH
+
+#### npm Not Found
+```cmd
+'npm' is not recognized as an internal or external command
+```
+
+**Solutions**:
+1. Reinstall Node.js (npm comes with Node.js)
+2. Check if npm is in your PATH
+3. Try using `npx` instead
+
+#### Permission Denied (Global Installation)
+```cmd
+Error: EACCES: permission denied
+```
+
+**Solutions**:
+1. Run Command Prompt as Administrator
+2. Use `npm install -g . --unsafe-perm`
+3. Or install locally and use `npx smart-commit`
+
+### Linux/macOS Issues
+
+#### Permission Denied
+```bash
+Error: EACCES: permission denied
+```
+
+**Solutions**:
+1. Use `sudo npm install -g .`
+2. Or configure npm to use a different directory: `npm config set prefix ~/.npm-global`
+3. Add `~/.npm-global/bin` to your PATH
 
 ## Advanced Usage
 
@@ -281,29 +419,33 @@ ModuleNotFoundError: No module named 'yaml'
 
 Extend the `DiffAnalyzer` class to add custom change detection patterns:
 
-```python
-from lib.diff_analyzer import DiffAnalyzer
+```javascript
+const DiffAnalyzer = require('./lib/diff-analyzer');
 
-class CustomAnalyzer(DiffAnalyzer):
-    def __init__(self):
-        super().__init__()
-        # Add custom patterns
-        self.change_patterns['migration'] = [
-            r'add.*migration', r'create.*table', r'alter.*column'
-        ]
+class CustomAnalyzer extends DiffAnalyzer {
+    constructor() {
+        super();
+        // Add custom patterns
+        this.changePatterns['migration'] = [
+            /add.*migration/i, /create.*table/i, /alter.*column/i
+        ];
+    }
+}
 ```
 
 ### Custom Message Templates
 
 Extend the `MessageGenerator` class:
 
-```python
-from lib.message_generator import MessageGenerator
+```javascript
+const MessageGenerator = require('./lib/message-generator');
 
-class CustomGenerator(MessageGenerator):
-    def generate_subject(self, analysis):
-        # Custom logic here
-        return super().generate_subject(analysis)
+class CustomGenerator extends MessageGenerator {
+    generateSubject(analysis) {
+        // Custom logic here
+        return super.generateSubject(analysis);
+    }
+}
 ```
 
 ## Contributing
@@ -320,8 +462,14 @@ MIT License - see LICENSE file for details.
 
 ## Changelog
 
+### v2.0.0
+- **Major rewrite**: Converted from Python to Node.js for better cross-platform support
+- **GPT Integration**: Added OpenAI GPT support for intelligent commit message generation
+- **Enhanced CLI**: Improved command-line interface with better error handling
+- **Environment Configuration**: Added .env file support for API keys
+- **Better UX**: Enhanced interactive mode with colored output and better prompts
+
 ### v1.0.0
-- Initial release
 - Interactive and automatic commit modes
 - Support for major programming languages
 - Conventional commit message generation
